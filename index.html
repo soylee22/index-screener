@@ -124,6 +124,7 @@
     </div>
     <select id="sector"><option value="">All sectors</option></select>
     <span class="toggle" id="t-hq">&#9670; High quality (B+)</span>
+    <span class="toggle" id="t-buynear">&#9670; At or near buy signal</span>
     <span class="toggle" id="t-buy">&#9733; Has buy signal</span>
     <span class="toggle" id="t-near">&#9679; Nearing a signal</span>
     <span class="toggle" id="t-s2">&#9650; Stage 2 only</span>
@@ -166,7 +167,7 @@ const D = {"generated":"2026-06-25","n":612,"asof":"2026-06-24","n_hq":193,"n_bu
 const SECCOL = {Technology:'#4c8dff',Healthcare:'#46c2a8',Financials:'#e8b84b','Consumer Discretionary':'#e5734b','Consumer Staples':'#9b8afb',Industrials:'#8a909b',Energy:'#e5534b',Materials:'#b98a4b','Communication Services':'#c264d6',Utilities:'#5ba7c9','Real Estate':'#7fb069',Other:'#5a5f6a'};
 D.rows.forEach(r=>{r.memkey=(r.indices.includes('SPX')?8:0)+(r.indices.includes('DJI')?4:0)+(r.indices.includes('NDX')?2:0)+(r.indices.includes('UKX')?1:0);});
 
-let q='', idx={SPX:true,DJI:true,NDX:true,UKX:true}, sector='', s2only=false, buyonly=false, nearonly=false, hqonly=false;
+let q='', idx={SPX:true,DJI:true,NDX:true,UKX:true}, sector='', s2only=false, buyonly=false, nearonly=false, hqonly=false, buynear=false;
 let sortK='mktcap', sortDir=-1, userSorted=false;
 
 const fnum=(v,d=2)=>v==null||isNaN(v)?'<span class="dim">-</span>':(+v).toFixed(d);
@@ -191,6 +192,7 @@ function passes(r){
   if(sector && r.sector!==sector)return false;
   if(s2only && !r.stage2)return false;
   if(hqonly && !((r.quality||0)>=65))return false;
+  if(buynear && !(r.volTier>=1 || r.near))return false;
   if(buyonly && !(r.volTier>=1))return false;
   if(nearonly && !r.near)return false;
   if(q){const s=(r.ticker+' '+r.name+' '+r.sector+' '+r.country).toLowerCase();if(!s.includes(q))return false;}
@@ -238,6 +240,7 @@ document.getElementById('sector').onchange=e=>{sector=e.target.value;render();};
 document.querySelectorAll('#idxchips .chip').forEach(c=>c.onclick=()=>{const i=c.dataset.i;idx[i]=!idx[i];c.classList.toggle('on',idx[i]);render();});
 document.getElementById('t-hq').onclick=function(){hqonly=!hqonly;this.classList.toggle('on',hqonly);render();};
 document.getElementById('t-s2').onclick=function(){s2only=!s2only;this.classList.toggle('on',s2only);render();};
+document.getElementById('t-buynear').onclick=function(){buynear=!buynear;this.classList.toggle('on',buynear);render();};
 document.getElementById('t-buy').onclick=function(){buyonly=!buyonly;this.classList.toggle('on',buyonly);render();};
 document.getElementById('t-near').onclick=function(){nearonly=!nearonly;this.classList.toggle('on',nearonly);render();};
 document.querySelectorAll('thead th').forEach(th=>th.onclick=()=>{
