@@ -16,6 +16,9 @@
     font-feature-settings:"tnum" 1;-webkit-font-smoothing:antialiased;}
   .num{font-variant-numeric:tabular-nums;font-family:ui-monospace,"SF Mono",Menlo,monospace;}
   .wrap{max-width:1480px;margin:0 auto;padding:26px 22px 70px;}
+  .nav{display:flex;gap:4px;margin-bottom:18px;}
+  .nav a{font-size:13px;font-weight:600;text-decoration:none;padding:8px 16px;border-radius:9px;color:var(--muted);border:1px solid var(--line2);background:var(--surface);}
+  .nav a.on{background:var(--gold);color:#1a1408;border-color:var(--gold);}
 
   header{display:flex;flex-wrap:wrap;align-items:flex-end;gap:18px 28px;border-bottom:1px solid var(--line);padding-bottom:18px;}
   .brand{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:700;}
@@ -95,6 +98,7 @@
 </head>
 <body>
 <div class="wrap">
+  <div class="nav"><a href="index.html" class="on">Equities</a><a href="etfs.html">ETFs</a></div>
   <header>
     <div>
       <div class="brand">SecondBrain &middot; Equity Signals</div>
